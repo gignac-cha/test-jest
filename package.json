@@ -5,6 +5,7 @@
         "test:unit": "jest",
         "test:integration": "ls"
     },
+    "packageManager": "pnpm@9.6.0",
     "devDependencies": {
         "@types/jest": "^29.5.12",
         "@types/node": "20.14.11",
