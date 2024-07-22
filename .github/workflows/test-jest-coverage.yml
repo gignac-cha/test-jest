@@ -53,6 +53,7 @@ jobs:
           path: ${{ env.PNPM_STORE_PATH }}
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: ${{ runner.os }}-pnpm-store-
+      - run: pnpm install
       - run: pnpm test:unit
   integration-test:
     needs: build
@@ -78,4 +79,5 @@ jobs:
           name: build
           path: outputs
           overwrite: true
+      - run: pnpm install
       - run: pnpm test:integration

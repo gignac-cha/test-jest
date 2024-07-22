@@ -2,10 +2,10 @@
     "compilerOptions": {
         "target": "ESNext",
         "lib": ["ESNext", "DOM", "DOM.Iterable"],
-        "rootDir": "./sources",
         "module": "ESNext",
         "outDir": "outputs"
     },
+    "exclude": ["tests"],
     "ts-node": {
         "compilerOptions": {
             "module": "CommonJS"
