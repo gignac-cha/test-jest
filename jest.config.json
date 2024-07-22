@@ -1,0 +1,6 @@
+
+{
+    "bail": 1,
+    "testEnvironment": "node",
+    "verbose": true
+}

@@ -1,0 +1,75 @@
+name: Test Jest Coverage
+
+on:
+  push:
+    branches:
+      - test-jest-coverage
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: latest
+          check-latest: true
+      - uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+      - run: echo "PNPM_STORE_PATH=$(pnpm store path)" >> $GITHUB_ENV
+        shell: bash
+      - uses: actions/cache@v4
+        with:
+          path: ${{ env.PNPM_STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-pnpm-store-
+      - run: pnpm install
+      - run: pnpm build
+      - uses: actions/upload-artifact@v4
+        name: build
+        path: outputs
+        overwrite: true
+  unit-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: latest
+          check-latest: true
+      - uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+      - run: echo "PNPM_STORE_PATH=$(pnpm store path)" >> $GITHUB_ENV
+        shell: bash
+      - uses: actions/cache@v4
+        with:
+          path: ${{ env.PNPM_STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-pnpm-store-
+      - run: pnpm test-unit
+  integration-test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: latest
+          check-latest: true
+      - uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+      - run: echo "PNPM_STORE_PATH=$(pnpm store path)" >> $GITHUB_ENV
+        shell: bash
+      - uses: actions/cache@v4
+        with:
+          path: ${{ env.PNPM_STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-pnpm-store-
+      - run: pnpm test-integration
